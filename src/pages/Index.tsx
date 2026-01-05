@@ -1,13 +1,52 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { Helmet } from "react-helmet-async";
+import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
+import FeaturedTours from "@/components/FeaturedTours";
+import WhyChooseUs from "@/components/WhyChooseUs";
+import Newsletter from "@/components/Newsletter";
+import Footer from "@/components/Footer";
+import BookingModal from "@/components/BookingModal";
 
 const Index = () => {
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [selectedTourId, setSelectedTourId] = useState<string | null>(null);
+
+  const handleBookTour = (tourId: string) => {
+    setSelectedTourId(tourId);
+    setIsBookingOpen(true);
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <>
+      <Helmet>
+        <title>Wanderlust Tours | Unforgettable African Safari Adventures</title>
+        <meta
+          name="description"
+          content="Discover breathtaking safaris, pristine beaches, and unforgettable cultural journeys across East Africa. Book your dream adventure with Wanderlust Tours today."
+        />
+        <meta
+          name="keywords"
+          content="safari tours, Kenya travel, Tanzania safari, Maasai Mara, beach holiday, African adventure"
+        />
+        <link rel="canonical" href="https://wanderlusttours.co.ke" />
+      </Helmet>
+
+      <main>
+        <Navbar />
+        <Hero />
+        <FeaturedTours onBookTour={handleBookTour} />
+        <WhyChooseUs />
+        <Newsletter />
+        <Footer />
+
+        <BookingModal
+          isOpen={isBookingOpen}
+          onClose={() => setIsBookingOpen(false)}
+          tourId={selectedTourId}
+        />
+      </main>
+    </>
   );
 };
 
