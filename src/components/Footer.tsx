@@ -1,32 +1,56 @@
 import { MapPin, Phone, Mail, Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
-
 const Footer = () => {
-  const quickLinks = [
-    { name: "Home", href: "/" },
-    { name: "Tours", href: "#tours" },
-    { name: "Destinations", href: "#destinations" },
-    { name: "About Us", href: "#about" },
-    { name: "Contact", href: "#contact" },
-  ];
-
-  const tourTypes = [
-    { name: "Safari Tours", href: "#" },
-    { name: "Beach Holidays", href: "#" },
-    { name: "Mountain Climbing", href: "#" },
-    { name: "Cultural Tours", href: "#" },
-    { name: "City Tours", href: "#" },
-  ];
-
-  const socialLinks = [
-    { icon: Facebook, href: "#", label: "Facebook" },
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Youtube, href: "#", label: "YouTube" },
-  ];
-
-  return (
-    <footer id="contact" className="bg-foreground text-primary-foreground pt-16 pb-8">
+  const quickLinks = [{
+    name: "Home",
+    href: "/"
+  }, {
+    name: "Tours",
+    href: "#tours"
+  }, {
+    name: "Destinations",
+    href: "#destinations"
+  }, {
+    name: "About Us",
+    href: "#about"
+  }, {
+    name: "Contact",
+    href: "#contact"
+  }];
+  const tourTypes = [{
+    name: "Safari Tours",
+    href: "#"
+  }, {
+    name: "Beach Holidays",
+    href: "#"
+  }, {
+    name: "Mountain Climbing",
+    href: "#"
+  }, {
+    name: "Cultural Tours",
+    href: "#"
+  }, {
+    name: "City Tours",
+    href: "#"
+  }];
+  const socialLinks = [{
+    icon: Facebook,
+    href: "#",
+    label: "Facebook"
+  }, {
+    icon: Instagram,
+    href: "#",
+    label: "Instagram"
+  }, {
+    icon: Twitter,
+    href: "#",
+    label: "Twitter"
+  }, {
+    icon: Youtube,
+    href: "#",
+    label: "YouTube"
+  }];
+  return <footer id="contact" className="bg-foreground text-primary-foreground pt-16 pb-8">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
@@ -42,16 +66,9 @@ const Footer = () => {
               Experience Kenya's wildlife and natural beauty with us.
             </p>
             <div className="flex gap-3">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  aria-label={social.label}
-                  className="w-10 h-10 rounded-lg bg-primary-foreground/10 flex items-center justify-center hover:bg-primary transition-colors"
-                >
+              {socialLinks.map(social => <a key={social.label} href={social.href} aria-label={social.label} className="w-10 h-10 rounded-lg bg-primary-foreground/10 flex items-center justify-center hover:bg-primary transition-colors">
                   <social.icon className="w-5 h-5" />
-                </a>
-              ))}
+                </a>)}
             </div>
           </div>
 
@@ -59,16 +76,11 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-display font-semibold mb-5">Quick Links</h4>
             <ul className="space-y-3">
-              {quickLinks.map((link) => (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-primary-foreground/70 hover:text-primary transition-colors"
-                  >
+              {quickLinks.map(link => <li key={link.name}>
+                  <a href={link.href} className="text-primary-foreground/70 hover:text-primary transition-colors">
                     {link.name}
                   </a>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
 
@@ -76,16 +88,11 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-display font-semibold mb-5">Tour Types</h4>
             <ul className="space-y-3">
-              {tourTypes.map((link) => (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-primary-foreground/70 hover:text-primary transition-colors"
-                  >
+              {tourTypes.map(link => <li key={link.name}>
+                  <a href={link.href} className="text-primary-foreground/70 hover:text-primary transition-colors">
                     {link.name}
                   </a>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
 
@@ -103,21 +110,13 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-primary" />
-                <a
-                  href="tel:+254700000000"
-                  className="text-primary-foreground/70 hover:text-primary transition-colors"
-                >
+                <a href="tel:+254700000000" className="text-primary-foreground/70 hover:text-primary transition-colors">
                   +254 700 000 000
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-primary" />
-                <a
-                  href="mailto:info@mflipadventures.co.ke"
-                  className="text-primary-foreground/70 hover:text-primary transition-colors"
-                >
-                  info@mflipadventures.co.ke
-                </a>
+                <a className="text-primary-foreground/70 hover:text-primary transition-colors" href="mailto:mflipadventuressafaris@gmail.com">@mflipadventures.co.ke</a>
               </li>
             </ul>
           </div>
@@ -141,8 +140,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
