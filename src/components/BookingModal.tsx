@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Calendar, Users, CreditCard, Phone, Mail, User } from "lucide-react";
+import { X, Calendar, Users, Phone, Mail, User, Smartphone, Edit2, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,6 +18,9 @@ const tourDetails: Record<string, { title: string; price: number }> = {
   "3": { title: "Hot Air Balloon Safari", price: 65000 },
 };
 
+// Default M-PESA Till Number - This can be edited by the user
+const DEFAULT_MPESA_TILL = "123456";
+
 const BookingModal = ({ isOpen, onClose, tourId }: BookingModalProps) => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -27,6 +30,9 @@ const BookingModal = ({ isOpen, onClose, tourId }: BookingModalProps) => {
     date: "",
     guests: "2",
   });
+  const [mpesaTillNumber, setMpesaTillNumber] = useState(DEFAULT_MPESA_TILL);
+  const [isEditingTill, setIsEditingTill] = useState(false);
+  const [tempTillNumber, setTempTillNumber] = useState(mpesaTillNumber);
 
   const tour = tourId ? tourDetails[tourId] : null;
 
@@ -37,7 +43,7 @@ const BookingModal = ({ isOpen, onClose, tourId }: BookingModalProps) => {
     } else {
       toast({
         title: "Booking Request Sent!",
-        description: "We'll send payment instructions to your email shortly.",
+        description: `Please pay via M-PESA Till Number: ${mpesaTillNumber}. We'll confirm your booking shortly.`,
       });
       onClose();
       setStep(1);
@@ -47,6 +53,17 @@ const BookingModal = ({ isOpen, onClose, tourId }: BookingModalProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSaveTill = () => {
+    if (tempTillNumber.trim()) {
+      setMpesaTillNumber(tempTillNumber.trim());
+      setIsEditingTill(false);
+      toast({
+        title: "Till Number Updated",
+        description: `M-PESA Till Number set to: ${tempTillNumber.trim()}`,
+      });
+    }
   };
 
   if (!tour) return null;
@@ -72,14 +89,14 @@ const BookingModal = ({ isOpen, onClose, tourId }: BookingModalProps) => {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="relative p-6 bg-gradient-sunset text-primary-foreground">
+            <div className="relative p-6 bg-gradient-primary text-primary-foreground">
               <button
                 onClick={onClose}
                 className="absolute top-4 right-4 w-8 h-8 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
-              <h2 className="text-2xl font-display font-bold mb-1">Book Your Tour</h2>
+              <h2 className="text-2xl font-display font-bold mb-1">Book Your Safari</h2>
               <p className="text-primary-foreground/80">{tour.title}</p>
 
               {/* Progress Steps */}
@@ -97,7 +114,7 @@ const BookingModal = ({ isOpen, onClose, tourId }: BookingModalProps) => {
               <div className="flex justify-between text-xs mt-2 text-primary-foreground/60">
                 <span>Details</span>
                 <span>Schedule</span>
-                <span>Confirm</span>
+                <span>Payment</span>
               </div>
             </div>
 
@@ -216,7 +233,7 @@ const BookingModal = ({ isOpen, onClose, tourId }: BookingModalProps) => {
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Tour</span>
-                        <span className="text-foreground">{tour.title}</span>
+                        <span className="text-foreground font-medium">{tour.title}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Date</span>
@@ -231,23 +248,71 @@ const BookingModal = ({ isOpen, onClose, tourId }: BookingModalProps) => {
                         <span className="text-foreground">KES {tour.price.toLocaleString()}</span>
                       </div>
                     </div>
-                    <div className="pt-3 border-t border-border flex justify-between">
-                      <span className="font-semibold text-foreground">Total</span>
-                      <span className="text-xl font-bold text-primary">
+                    <div className="pt-3 border-t border-border flex justify-between items-center">
+                      <span className="font-semibold text-foreground">Total Amount</span>
+                      <span className="text-2xl font-bold text-primary">
                         KES {totalPrice.toLocaleString()}
                       </span>
                     </div>
                   </div>
 
-                  <div className="bg-secondary/10 rounded-xl p-4">
-                    <div className="flex items-center gap-3 mb-2">
-                      <CreditCard className="w-5 h-5 text-secondary" />
-                      <span className="font-medium text-foreground">Payment via M-PESA</span>
+                  {/* M-PESA Payment Section */}
+                  <div className="bg-secondary text-secondary-foreground rounded-xl p-4">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+                        <Smartphone className="w-5 h-5 text-primary-foreground" />
+                      </div>
+                      <div>
+                        <span className="font-semibold block">Pay via M-PESA</span>
+                        <span className="text-sm text-secondary-foreground/70">Till Number Payment</span>
+                      </div>
                     </div>
-                    <p className="text-sm text-muted-foreground">
-                      You'll receive an M-PESA STK push to{" "}
-                      <strong>{formData.phone}</strong> after confirming this booking.
-                    </p>
+                    
+                    {/* Editable Till Number */}
+                    <div className="bg-secondary-foreground/10 rounded-lg p-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-secondary-foreground/70">Till Number:</span>
+                        {isEditingTill ? (
+                          <div className="flex items-center gap-2">
+                            <Input
+                              value={tempTillNumber}
+                              onChange={(e) => setTempTillNumber(e.target.value)}
+                              className="w-32 h-8 text-center bg-background text-foreground"
+                              placeholder="Till Number"
+                            />
+                            <button
+                              type="button"
+                              onClick={handleSaveTill}
+                              className="w-8 h-8 rounded-full bg-primary flex items-center justify-center hover:bg-primary/90 transition-colors"
+                            >
+                              <Check className="w-4 h-4 text-primary-foreground" />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2">
+                            <span className="text-xl font-bold text-primary-foreground">{mpesaTillNumber}</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setTempTillNumber(mpesaTillNumber);
+                                setIsEditingTill(true);
+                              }}
+                              className="w-6 h-6 rounded-full bg-secondary-foreground/20 flex items-center justify-center hover:bg-secondary-foreground/30 transition-colors"
+                            >
+                              <Edit2 className="w-3 h-3" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="mt-3 text-sm text-secondary-foreground/80 space-y-1">
+                      <p>1. Go to M-PESA on your phone</p>
+                      <p>2. Select "Lipa na M-PESA" → "Buy Goods"</p>
+                      <p>3. Enter Till Number: <strong>{mpesaTillNumber}</strong></p>
+                      <p>4. Enter Amount: <strong>KES {totalPrice.toLocaleString()}</strong></p>
+                      <p>5. Enter your M-PESA PIN and confirm</p>
+                    </div>
                   </div>
                 </motion.div>
               )}

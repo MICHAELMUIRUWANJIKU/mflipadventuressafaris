@@ -48,7 +48,7 @@ const Navbar = () => {
                 isScrolled ? "text-foreground" : "text-primary-foreground"
               }`}
             >
-              Wanderlust
+              MFLIP ADVENTURES
             </span>
           </Link>
 

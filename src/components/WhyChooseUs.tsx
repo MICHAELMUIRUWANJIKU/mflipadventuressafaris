@@ -39,8 +39,8 @@ const WhyChooseUs = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <span className="inline-block px-4 py-1.5 rounded-full bg-secondary/20 text-secondary text-sm font-medium mb-4">
-            Why Wanderlust
+          <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+            Why MFLIP Adventures
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-4">
             Travel With Confidence

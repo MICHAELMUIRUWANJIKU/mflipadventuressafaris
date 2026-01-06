@@ -56,9 +56,9 @@ const Auth = () => {
     <>
       <Helmet>
         <title>
-          {mode === "login" ? "Sign In" : mode === "signup" ? "Create Account" : "Phone Login"} | Wanderlust Tours
+          {mode === "login" ? "Sign In" : mode === "signup" ? "Create Account" : "Phone Login"} | MFLIP Adventures Safaris
         </title>
-        <meta name="description" content="Sign in or create an account to book your dream African adventure." />
+        <meta name="description" content="Sign in or create an account to book your dream African adventure with MFLIP Adventures Safaris." />
       </Helmet>
 
       <div className="min-h-screen flex">
@@ -74,7 +74,7 @@ const Auth = () => {
               <div className="w-10 h-10 rounded-xl bg-gradient-sunset flex items-center justify-center">
                 <MapPin className="w-5 h-5" />
               </div>
-              <span className="text-xl font-display font-bold">Wanderlust</span>
+              <span className="text-xl font-display font-bold">MFLIP ADVENTURES</span>
             </Link>
             
             <div>
@@ -97,7 +97,7 @@ const Auth = () => {
                 <div className="w-10 h-10 rounded-xl bg-gradient-sunset flex items-center justify-center">
                   <MapPin className="w-5 h-5 text-primary-foreground" />
                 </div>
-                <span className="text-xl font-display font-bold text-foreground">Wanderlust</span>
+                <span className="text-xl font-display font-bold text-foreground">MFLIP ADVENTURES</span>
               </Link>
             </div>
 
