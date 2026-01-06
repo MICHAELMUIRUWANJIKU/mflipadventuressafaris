@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, MapPin, User } from "lucide-react";
+import { Menu, X, User, Crosshair } from "lucide-react";
 import { Button } from "@/components/ui/button";
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -42,7 +42,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
             <div className="w-10 h-10 rounded-xl bg-gradient-sunset flex items-center justify-center shadow-glow">
-              <MapPin className="w-5 h-5 text-primary-foreground bg-accent-foreground" />
+              <Crosshair className="w-5 h-5 text-primary-foreground bg-accent-foreground" />
             </div>
             <span className={`text-2xl font-display font-bold transition-colors ${isScrolled ? "text-foreground" : "text-primary-foreground"}`}>
               MFLIP ADVENTURES
