@@ -20,16 +20,16 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>Wanderlust Tours | Unforgettable African Safari Adventures</title>
+        <title>MFLIP Adventures Safaris | Unforgettable African Safari Adventures</title>
         <meta
           name="description"
-          content="Discover breathtaking safaris, pristine beaches, and unforgettable cultural journeys across East Africa. Book your dream adventure with Wanderlust Tours today."
+          content="Discover breathtaking safaris, pristine beaches, and unforgettable cultural journeys across East Africa. Book your dream adventure with MFLIP Adventures Safaris today."
         />
         <meta
           name="keywords"
-          content="safari tours, Kenya travel, Tanzania safari, Maasai Mara, beach holiday, African adventure"
+          content="safari tours, Kenya travel, Tanzania safari, Maasai Mara, beach holiday, African adventure, MFLIP Adventures"
         />
-        <link rel="canonical" href="https://wanderlusttours.co.ke" />
+        <link rel="canonical" href="https://mflipadventures.co.ke" />
       </Helmet>
 
       <main>

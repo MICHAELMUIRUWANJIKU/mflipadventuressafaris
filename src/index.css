@@ -1,114 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
-
-/* Travel & Tour Website Design System */
-
 @layer base {
   :root {
-    /* Warm travel-inspired palette */
-    --background: 40 33% 98%;
-    --foreground: 25 20% 15%;
-
+    /* Red, Black, White Theme */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 5%;
+    
     --card: 0 0% 100%;
-    --card-foreground: 25 20% 15%;
-
+    --card-foreground: 0 0% 5%;
+    
     --popover: 0 0% 100%;
-    --popover-foreground: 25 20% 15%;
-
-    /* Sunset coral/amber */
-    --primary: 0 72.2222% 50.5882%;
+    --popover-foreground: 0 0% 5%;
+    
+    /* Primary: Bold Red */
+    --primary: 0 85% 50%;
     --primary-foreground: 0 0% 100%;
-
-    /* Ocean teal */
-    --secondary: 217 87% 10%;
+    
+    /* Secondary: Black */
+    --secondary: 0 0% 8%;
     --secondary-foreground: 0 0% 100%;
-
-    /* Cream/sand */
-    --muted: 40 20% 92%;
-    --muted-foreground: 25 15% 45%;
-
-    /* Warm gold accent */
-    --accent: 38 90% 50%;
-    --accent-foreground: 25 20% 15%;
-
-    --destructive: 0 84.2% 60.2%;
+    
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 40%;
+    
+    /* Accent: Deep Red */
+    --accent: 0 75% 45%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 85% 50%;
     --destructive-foreground: 0 0% 100%;
-
-    --border: 30 15% 88%;
-    --input: 30 15% 88%;
-    --ring: 24 85% 55%;
-
+    
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 85% 50%;
+    
     --radius: 0.75rem;
-
-    /* Custom travel tokens */
-    --coral: 12 80% 60%;
-    --teal: 185 55% 40%;
-    --sand: 40 30% 90%;
-    --sunset: 30 90% 58%;
-    --ocean: 195 70% 45%;
-    --jungle: 145 45% 35%;
-
+    
+    /* Custom Brand Colors */
+    --brand-red: 0 85% 50%;
+    --brand-red-dark: 0 85% 40%;
+    --brand-black: 0 0% 8%;
+    --brand-white: 0 0% 100%;
+    --brand-gray: 0 0% 95%;
+    
     /* Gradients */
-    --gradient-sunset: linear-gradient(135deg, hsl(24 85% 55%), hsl(38 90% 50%));
-    --gradient-ocean: linear-gradient(135deg, hsl(185 60% 35%), hsl(195 70% 45%));
-    --gradient-hero: linear-gradient(180deg, hsla(0 0% 0% / 0.3) 0%, hsla(0 0% 0% / 0.5) 100%);
-
+    --gradient-primary: linear-gradient(135deg, hsl(0, 85%, 50%) 0%, hsl(0, 85%, 35%) 100%);
+    --gradient-dark: linear-gradient(135deg, hsl(0, 0%, 8%) 0%, hsl(0, 0%, 15%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsla(0, 0%, 0%, 0.6) 0%, hsla(0, 0%, 0%, 0.3) 50%, hsla(0, 0%, 0%, 0.7) 100%);
+    
     /* Shadows */
-    --shadow-soft: 0 4px 20px -4px hsla(25 20% 15% / 0.1);
-    --shadow-card: 0 8px 30px -6px hsla(25 20% 15% / 0.12);
-    --shadow-elevated: 0 20px 50px -12px hsla(25 20% 15% / 0.2);
-    --shadow-glow: 0 0 40px hsla(24 85% 55% / 0.3);
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --shadow-sm: 0 2px 8px -2px hsla(0, 0%, 0%, 0.1);
+    --shadow-md: 0 8px 24px -8px hsla(0, 0%, 0%, 0.15);
+    --shadow-lg: 0 16px 48px -16px hsla(0, 0%, 0%, 0.2);
+    --shadow-red: 0 8px 24px -8px hsla(0, 85%, 50%, 0.3);
+    
+    /* Sidebar */
+    --sidebar-background: 0 0% 8%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 0 85% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 0 85% 50%;
   }
 
   .dark {
-    --background: 25 20% 8%;
-    --foreground: 40 20% 95%;
-
-    --card: 25 18% 12%;
-    --card-foreground: 40 20% 95%;
-
-    --popover: 25 18% 12%;
-    --popover-foreground: 40 20% 95%;
-
-    --primary: 24 85% 55%;
+    --background: 0 0% 5%;
+    --foreground: 0 0% 98%;
+    
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 98%;
+    
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 98%;
+    
+    --primary: 0 85% 55%;
     --primary-foreground: 0 0% 100%;
-
-    --secondary: 185 50% 45%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 25 15% 18%;
-    --muted-foreground: 40 15% 60%;
-
-    --accent: 38 80% 55%;
-    --accent-foreground: 25 20% 10%;
-
-    --destructive: 0 62.8% 50%;
+    
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+    
+    --accent: 0 75% 50%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 85% 50%;
     --destructive-foreground: 0 0% 100%;
-
-    --border: 25 15% 20%;
-    --input: 25 15% 20%;
-    --ring: 24 85% 55%;
-
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 85% 55%;
   }
 }
 
@@ -116,107 +104,81 @@
   * {
     @apply border-border;
   }
-
+  
   html {
     scroll-behavior: smooth;
   }
-
+  
   body {
     @apply bg-background text-foreground font-body antialiased;
   }
-
+  
   h1, h2, h3, h4, h5, h6 {
     @apply font-display font-semibold tracking-tight;
   }
 }
 
 @layer components {
-  .text-gradient-sunset {
+  .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: var(--gradient-sunset);
+    background-image: var(--gradient-primary);
   }
-
-  .text-gradient-ocean {
-    @apply bg-clip-text text-transparent;
-    background-image: var(--gradient-ocean);
+  
+  .bg-gradient-primary {
+    background-image: var(--gradient-primary);
   }
-
-  .bg-gradient-sunset {
-    background-image: var(--gradient-sunset);
+  
+  .bg-gradient-dark {
+    background-image: var(--gradient-dark);
   }
-
-  .bg-gradient-ocean {
-    background-image: var(--gradient-ocean);
-  }
-
+  
   .bg-gradient-hero {
     background-image: var(--gradient-hero);
   }
-
+  
+  .bg-gradient-sunset {
+    background-image: var(--gradient-primary);
+  }
+  
   .shadow-soft {
-    box-shadow: var(--shadow-soft);
+    box-shadow: var(--shadow-sm);
   }
-
+  
   .shadow-card {
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--shadow-md);
   }
-
+  
   .shadow-elevated {
-    box-shadow: var(--shadow-elevated);
+    box-shadow: var(--shadow-lg);
   }
-
+  
   .shadow-glow {
-    box-shadow: var(--shadow-glow);
+    box-shadow: var(--shadow-red);
   }
-
+  
   .glass {
     @apply backdrop-blur-md bg-card/80 border border-border/50;
   }
-
+  
   .glass-dark {
-    @apply backdrop-blur-md bg-foreground/10 border border-foreground/10;
+    @apply backdrop-blur-md bg-secondary/80 border border-border/20;
   }
 }
 
-@layer utilities {
-  .animate-fade-in {
-    animation: fadeIn 0.6s ease-out forwards;
-  }
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
 
-  .animate-slide-up {
-    animation: slideUp 0.6s ease-out forwards;
-  }
+::-webkit-scrollbar-track {
+  @apply bg-muted;
+}
 
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
+::-webkit-scrollbar-thumb {
+  @apply bg-primary/50 rounded-full;
+}
 
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary;
 }
