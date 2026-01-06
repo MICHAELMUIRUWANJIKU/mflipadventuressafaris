@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Calendar, Users, Phone, Mail, User, Smartphone, Edit2, Check } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { X, Calendar, Users, Phone, Mail, User, Smartphone, Edit2, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -18,11 +21,15 @@ const tourDetails: Record<string, { title: string; price: number }> = {
   "3": { title: "Hot Air Balloon Safari", price: 65000 },
 };
 
-// Default M-PESA Till Number - This can be edited by the user
+// Default M-PESA Till Number - This can be edited by the admin
 const DEFAULT_MPESA_TILL = "123456";
 
 const BookingModal = ({ isOpen, onClose, tourId }: BookingModalProps) => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  
   const [step, setStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,18 +43,63 @@ const BookingModal = ({ isOpen, onClose, tourId }: BookingModalProps) => {
 
   const tour = tourId ? tourDetails[tourId] : null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (step < 3) {
       setStep(step + 1);
-    } else {
+      return;
+    }
+
+    // Check if user is logged in before creating booking
+    if (!user) {
       toast({
-        title: "Booking Request Sent!",
-        description: `Please pay via M-PESA Till Number: ${mpesaTillNumber}. We'll confirm your booking shortly.`,
+        title: "Please sign in",
+        description: "You need to be signed in to complete a booking.",
+        variant: "destructive",
       });
+      onClose();
+      navigate("/auth");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const totalPrice = tour!.price * parseInt(formData.guests || "1");
+      
+      const { error } = await supabase.from("bookings").insert({
+        user_id: user.id,
+        tour_name: tour!.title,
+        tour_price: tour!.price,
+        travel_date: formData.date,
+        guests: parseInt(formData.guests),
+        full_name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        mpesa_till_number: mpesaTillNumber,
+        total_amount: totalPrice,
+        payment_status: "pending",
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Booking Confirmed!",
+        description: `Please pay KES ${totalPrice.toLocaleString()} via M-PESA Till Number: ${mpesaTillNumber}`,
+      });
+      
       onClose();
       setStep(1);
       setFormData({ name: "", email: "", phone: "", date: "", guests: "2" });
+    } catch (error: any) {
+      toast({
+        title: "Booking failed",
+        description: error.message || "Failed to create booking. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -314,6 +366,12 @@ const BookingModal = ({ isOpen, onClose, tourId }: BookingModalProps) => {
                       <p>5. Enter your M-PESA PIN and confirm</p>
                     </div>
                   </div>
+
+                  {!user && (
+                    <p className="text-sm text-muted-foreground text-center">
+                      You'll need to sign in to complete this booking.
+                    </p>
+                  )}
                 </motion.div>
               )}
 
@@ -324,12 +382,19 @@ const BookingModal = ({ isOpen, onClose, tourId }: BookingModalProps) => {
                     variant="outline"
                     className="flex-1"
                     onClick={() => setStep(step - 1)}
+                    disabled={isLoading}
                   >
                     Back
                   </Button>
                 )}
-                <Button type="submit" variant="default" className="flex-1">
-                  {step === 3 ? "Confirm Booking" : "Continue"}
+                <Button type="submit" variant="default" className="flex-1" disabled={isLoading}>
+                  {isLoading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : step === 3 ? (
+                    user ? "Confirm Booking" : "Sign In to Book"
+                  ) : (
+                    "Continue"
+                  )}
                 </Button>
               </div>
             </form>

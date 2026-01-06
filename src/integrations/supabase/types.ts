@@ -14,7 +14,90 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bookings: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string
+          guests: number
+          id: string
+          mpesa_receipt: string | null
+          mpesa_till_number: string
+          payment_status: string
+          phone: string
+          total_amount: number
+          tour_name: string
+          tour_price: number
+          travel_date: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name: string
+          guests?: number
+          id?: string
+          mpesa_receipt?: string | null
+          mpesa_till_number: string
+          payment_status?: string
+          phone: string
+          total_amount: number
+          tour_name: string
+          tour_price: number
+          travel_date: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string
+          guests?: number
+          id?: string
+          mpesa_receipt?: string | null
+          mpesa_till_number?: string
+          payment_status?: string
+          phone?: string
+          total_amount?: number
+          tour_name?: string
+          tour_price?: number
+          travel_date?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
