@@ -182,3 +182,6 @@
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-primary;
 }
+#lovable-badge {
+  display: none !important;
+}
