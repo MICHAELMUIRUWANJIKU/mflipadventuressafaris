@@ -1,19 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { Mail, Lock, User, Phone, ArrowLeft, Eye, EyeOff, MapPin } from "lucide-react";
+import { Mail, Lock, User, Phone, ArrowLeft, Eye, EyeOff, MapPin, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 import heroImage from "@/assets/hero-beach.jpg";
 
 type AuthMode = "login" | "signup" | "phone";
 
 const Auth = () => {
+  const navigate = useNavigate();
+  const { user, signUp, signIn, signInWithGoogle, signInWithPhone, verifyOtp } = useAuth();
+  
   const [mode, setMode] = useState<AuthMode>("login");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -23,33 +28,123 @@ const Auth = () => {
   });
   const [isOtpSent, setIsOtpSent] = useState(false);
 
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (mode === "phone" && !isOtpSent) {
-      setIsOtpSent(true);
-      toast({
-        title: "OTP Sent!",
-        description: `A verification code has been sent to ${formData.phone}`,
-      });
-      return;
-    }
+    setIsLoading(true);
 
-    toast({
-      title: mode === "login" ? "Welcome back!" : "Account created!",
-      description: "Redirecting to your dashboard...",
-    });
+    try {
+      if (mode === "phone") {
+        if (!isOtpSent) {
+          const { error } = await signInWithPhone(formData.phone);
+          if (error) {
+            toast({
+              title: "Error",
+              description: error.message,
+              variant: "destructive",
+            });
+          } else {
+            setIsOtpSent(true);
+            toast({
+              title: "OTP Sent!",
+              description: `A verification code has been sent to ${formData.phone}`,
+            });
+          }
+        } else {
+          const { error } = await verifyOtp(formData.phone, formData.otp);
+          if (error) {
+            toast({
+              title: "Error",
+              description: error.message,
+              variant: "destructive",
+            });
+          } else {
+            toast({
+              title: "Welcome!",
+              description: "You have been signed in successfully.",
+            });
+            navigate("/");
+          }
+        }
+      } else if (mode === "signup") {
+        const { error } = await signUp(formData.email, formData.password, formData.name);
+        if (error) {
+          if (error.message.includes("already registered")) {
+            toast({
+              title: "Account exists",
+              description: "This email is already registered. Please sign in instead.",
+              variant: "destructive",
+            });
+          } else {
+            toast({
+              title: "Error",
+              description: error.message,
+              variant: "destructive",
+            });
+          }
+        } else {
+          toast({
+            title: "Account created!",
+            description: "Welcome to MFLIP Adventures Safaris!",
+          });
+          navigate("/");
+        }
+      } else {
+        const { error } = await signIn(formData.email, formData.password);
+        if (error) {
+          if (error.message.includes("Invalid login")) {
+            toast({
+              title: "Invalid credentials",
+              description: "Please check your email and password.",
+              variant: "destructive",
+            });
+          } else {
+            toast({
+              title: "Error",
+              description: error.message,
+              variant: "destructive",
+            });
+          }
+        } else {
+          toast({
+            title: "Welcome back!",
+            description: "You have been signed in successfully.",
+          });
+          navigate("/");
+        }
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "An unexpected error occurred.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleGoogleLogin = () => {
-    toast({
-      title: "Google Sign In",
-      description: "Google authentication will be configured soon.",
-    });
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    const { error } = await signInWithGoogle();
+    if (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -147,6 +242,7 @@ const Auth = () => {
                           placeholder="John Doe"
                           className="pl-10"
                           required
+                          disabled={isLoading}
                         />
                       </div>
                     </div>
@@ -163,10 +259,10 @@ const Auth = () => {
                             name="phone"
                             value={formData.phone}
                             onChange={handleChange}
-                            placeholder="+254 700 000 000"
+                            placeholder="+254700000000"
                             className="pl-10"
                             required
-                            disabled={isOtpSent}
+                            disabled={isOtpSent || isLoading}
                           />
                         </div>
                       </div>
@@ -185,6 +281,7 @@ const Auth = () => {
                             className="mt-1.5 text-center text-lg tracking-widest"
                             maxLength={6}
                             required
+                            disabled={isLoading}
                           />
                         </motion.div>
                       )}
@@ -204,6 +301,7 @@ const Auth = () => {
                             placeholder="john@example.com"
                             className="pl-10"
                             required
+                            disabled={isLoading}
                           />
                         </div>
                       </div>
@@ -221,6 +319,8 @@ const Auth = () => {
                             placeholder="••••••••"
                             className="pl-10 pr-10"
                             required
+                            minLength={6}
+                            disabled={isLoading}
                           />
                           <button
                             type="button"
@@ -246,14 +346,18 @@ const Auth = () => {
                     </div>
                   )}
 
-                  <Button type="submit" variant="default" className="w-full" size="lg">
-                    {mode === "login"
-                      ? "Sign In"
-                      : mode === "signup"
-                      ? "Create Account"
-                      : isOtpSent
-                      ? "Verify Code"
-                      : "Send Code"}
+                  <Button type="submit" variant="default" className="w-full" size="lg" disabled={isLoading}>
+                    {isLoading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : mode === "login" ? (
+                      "Sign In"
+                    ) : mode === "signup" ? (
+                      "Create Account"
+                    ) : isOtpSent ? (
+                      "Verify Code"
+                    ) : (
+                      "Send Code"
+                    )}
                   </Button>
                 </form>
 
@@ -274,6 +378,7 @@ const Auth = () => {
                     variant="outline"
                     onClick={handleGoogleLogin}
                     className="h-11"
+                    disabled={isLoading}
                   >
                     <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                       <path
@@ -298,8 +403,12 @@ const Auth = () => {
                   <Button
                     type="button"
                     variant="outline"
-                    onClick={() => setMode("phone")}
+                    onClick={() => {
+                      setMode("phone");
+                      setIsOtpSent(false);
+                    }}
                     className="h-11"
+                    disabled={isLoading}
                   >
                     <Phone className="w-4 h-4 mr-2" />
                     Phone
@@ -315,6 +424,7 @@ const Auth = () => {
                         type="button"
                         onClick={() => setMode("signup")}
                         className="text-primary font-medium hover:underline"
+                        disabled={isLoading}
                       >
                         Sign up
                       </button>
@@ -329,6 +439,7 @@ const Auth = () => {
                           setIsOtpSent(false);
                         }}
                         className="text-primary font-medium hover:underline"
+                        disabled={isLoading}
                       >
                         Sign in
                       </button>
