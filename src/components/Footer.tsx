@@ -125,7 +125,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-primary-foreground/10 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-primary-foreground/50 text-sm">
-            © 2025 MFLIP Adventures Safaris. All rights reserved.
+            © 2026 MFLIP Adventures Safaris. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-primary-foreground/50">
             <a href="#" className="hover:text-primary transition-colors">
