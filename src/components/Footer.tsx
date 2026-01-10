@@ -1,5 +1,13 @@
-import { MapPin, Phone, Mail, Facebook, Instagram, Twitter, Youtube } from "lucide-react";
+import { MapPin, Phone, Mail, Facebook, Instagram } from "lucide-react";
 import { Link } from "react-router-dom";
+
+// X (Twitter) icon component
+const XIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
+
 const Footer = () => {
   const quickLinks = [{
     name: "Home",
@@ -35,20 +43,16 @@ const Footer = () => {
   }];
   const socialLinks = [{
     icon: Facebook,
-    href: "#",
+    href: "https://facebook.com", // Update with your Facebook page URL
     label: "Facebook"
   }, {
     icon: Instagram,
-    href: "#",
+    href: "https://instagram.com", // Update with your Instagram page URL
     label: "Instagram"
   }, {
-    icon: Twitter,
-    href: "#",
-    label: "Twitter"
-  }, {
-    icon: Youtube,
-    href: "#",
-    label: "YouTube"
+    icon: "x",
+    href: "https://x.com", // Update with your X (Twitter) page URL
+    label: "X"
   }];
   return <footer id="contact" className="bg-foreground text-primary-foreground pt-16 pb-8">
       <div className="container mx-auto px-4">
@@ -66,9 +70,22 @@ const Footer = () => {
               Experience Kenya's wildlife and natural beauty with us.
             </p>
             <div className="flex gap-3">
-              {socialLinks.map(social => <a key={social.label} href={social.href} aria-label={social.label} className="w-10 h-10 rounded-lg bg-primary-foreground/10 flex items-center justify-center hover:bg-primary transition-colors">
-                  <social.icon className="w-5 h-5" />
-                </a>)}
+              {socialLinks.map(social => (
+                <a 
+                  key={social.label} 
+                  href={social.href} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label} 
+                  className="w-10 h-10 rounded-lg bg-primary-foreground/10 flex items-center justify-center hover:bg-primary transition-colors"
+                >
+                  {social.icon === "x" ? (
+                    <XIcon className="w-5 h-5" />
+                  ) : (
+                    <social.icon className="w-5 h-5" />
+                  )}
+                </a>
+              ))}
             </div>
           </div>
 
